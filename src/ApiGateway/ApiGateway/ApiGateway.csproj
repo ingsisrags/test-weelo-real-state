@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>fb8f7b24-d252-4e61-8966-fe3c5d20c344</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <AssemblyName>ApiGateway</AssemblyName>
+    <RootNamespace>ApiGateway</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="ocelot.development.json" />
+    <Content Remove="ocelot.production.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ocelot.development.json" />
+    <None Include="ocelot.production.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityServer4" Version="4.1.1" />
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Ocelot" Version="15.0.7" />
+  </ItemGroup>
+
+
+</Project>
