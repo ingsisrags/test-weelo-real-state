@@ -11,6 +11,10 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Microsoft.Extensions.DependencyInjection;
 using Product.Api;
+using Common.Utilities.AppConfiguration;
+using Product.Persistence.Database.Context;
+using Product.Persistence.Database.WebHostingExtensions;
+using Product.Persistense.Database.Configuration.Seed;
 
 namespace Farming.Api
 {
@@ -22,17 +26,18 @@ namespace Farming.Api
         public static void Main(string[] args)
         {
             var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            //var configuration = AppConfigurations.Get(Directory.GetCurrentDirectory(), enviroment?.ToLower());
+            var configuration = AppConfigurations.Get(Directory.GetCurrentDirectory(), enviroment?.ToLower());
             Log.Information("Configuring web host ({ApplicationContext})...", AppName);
-            //var host = BuildWebHost(configuration, args);
-            //host.MigrateDbContext<ApplicationDbContext>(( contex , services) => {
-            //   var logger =  services.GetService<ILogger<ApplicationDbContext>>();
-            //    new 
-            //    SeedFarming().
-            //    SeedAsync(contex,logger,configuration).Wait();
-            //});
+            var host = BuildWebHost(configuration, args);
+            host.MigrateDbContext<ApplicationDbContext>((contex, services) =>
+            {
+                var logger = services.GetService<ILogger<ApplicationDbContext>>();
+                new
+                Seed().
+                SeedAsync(contex, logger, configuration).Wait();
+            });
             Log.Information("Starting web host ({ApplicationContext})...", AppName);
-            //host.RunAsync().Wait();
+            host.RunAsync().Wait();
         }
 
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>

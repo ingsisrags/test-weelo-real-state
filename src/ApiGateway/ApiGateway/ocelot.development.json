@@ -1,26 +1,7 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/security/api/connect/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "identity-service",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/security/api/connect/{everything}",
-      "UpstreamHttpMethod": [],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 1500
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/company/api/{everything}",
+      "DownstreamPathTemplate": "/product/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -28,49 +9,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/company/api/{everything}",
-      "UpstreamHttpMethod": [],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 1500
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/security/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "identity-service",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/security/api/{everything}",
-      "UpstreamHttpMethod": [],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
-      },
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 1500
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/farming/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "farming-service",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/farming/api/{everything}",
+      "UpstreamPathTemplate": "/product/api/{everything}",
       "UpstreamHttpMethod": [],
       "RateLimitOptions": {
         "ClientWhitelist": [],

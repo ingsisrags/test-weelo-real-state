@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.EntityFrameworkCore;
+using Product.Domain.Realstate;
 using System;
 
 namespace Product.Persistence.Database.Context
@@ -12,7 +13,10 @@ namespace Product.Persistence.Database.Context
         {
         }
 
-        //public virtual DbSet<Domain.Farming.Grow.GrowUnit> GrowUnits { get; set; }
+        public virtual DbSet<Property> Property { get; set; }
+        public virtual DbSet<Owner> Owner { get; set; }
+        public virtual DbSet<PropertyImage> PropertyImage { get; set; }
+        public virtual DbSet<PropertyTrace> PropertyTrace { get; set; }
        
     }
 }

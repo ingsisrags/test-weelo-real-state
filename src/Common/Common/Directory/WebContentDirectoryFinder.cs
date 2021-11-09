@@ -17,7 +17,7 @@ namespace Common.Utilities.Directory
             }
             var directoryInfo = new DirectoryInfo(coreAssemblyDirectoryPath);
             Console.WriteLine(directoryInfo.FullName);
-            while (!DirectoryContains(directoryInfo.FullName, "Identity.Api"))
+            while (!DirectoryContains(directoryInfo.FullName, "Product.Api"))
             {
                 if (directoryInfo.Parent == null)
                 {
@@ -27,10 +27,10 @@ namespace Common.Utilities.Directory
                 directoryInfo = directoryInfo.Parent;
             }
             Console.WriteLine(directoryInfo.FullName);
-            var webHostFolder = Path.Combine(directoryInfo.FullName, "Company", "Company.Api");
+            var webHostFolder = Path.Combine(directoryInfo.FullName, "Product", "Product.Api");
             if (!System.IO.Directory.Exists(webHostFolder))
             {
-                throw new Exception("Could not find root folder of the web project!");
+                throw new Exception($"Could not find root folder of the web project! {webHostFolder} { directoryInfo.FullName}");
             }
             return webHostFolder;
         }

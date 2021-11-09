@@ -11,12 +11,12 @@ services:
     volumes:
       - data:/var/opt/mssql/data
 
-  product-service:
+  product-service-test:
     image: ${REGISTRY:-realstate}/productapi:${PLATFORM:-linux}-${TAG:-latest}
-    container_name: identity-service
+    container_name: product-service-test
     environment:
         ASPNETCORE_ENVIRONMENT: "Development"
-        SQL_SERVER_CONNECTION: "Server=sqldata; Database=IdentityDb; User=sa; Password=Pass@word;"
+        SQL_SERVER_CONNECTION: "Server=sqldata; Database=RealStates; User=sa; Password=Pass@word;"
     build:
       context: .
       dockerfile: src/Services/Product/Product.Api/Dockerfile
@@ -25,9 +25,9 @@ services:
     depends_on:
       - sqldata
 
-  gateway-service:
+  gateway-service-test:
     image: ${REGISTRY:-v}/apigateway:${PLATFORM:-linux}-${TAG:-latest}
-    container_name: gateway-service
+    container_name: gateway-service-test
     environment:
     - ASPNETCORE_ENVIRONMENT=Development
     ports:

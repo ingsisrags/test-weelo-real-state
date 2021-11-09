@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Utilities.Database;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace Product.Domain.Realstate
 {
     [Table("PropertyTrace")]
-    public class PropertyTrace
+    public class PropertyTrace : Entity<Guid>
     {
         public DateTime DateSale { get; set; }
         public string Name { get; set; }

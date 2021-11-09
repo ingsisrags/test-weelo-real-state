@@ -1,24 +1,30 @@
-﻿using Common.Utilities.Database;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Product.Domain.Realstate
+namespace Product.DTOs.Realstate.Input
 {
-    [Table("Property")]
-    public class Property : Entity<Guid>
+    public class CreatePropertyInput
     {
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Address { get; set; }
+        [Required]
         public double Price { get; set; }
-        [Column(TypeName = "VARCHAR")]
         [StringLength(10)]
+        [Required]
         public string CodeInternal { get; set; }
+        [Required]
         public int Year { get; set; }
-        public Guid OwnerId { get; set; }
-        public Owner Owner { get; set; }
-        public List<PropertyTrace> PropertyTraces {get;set;}
-}
+        [Required]
+        public CreateOwnerInput Owner { get; set; }
+        [Required]
+        public CreatePropertyTrace PropertyTrace { get; set; }
+
+    }
 }

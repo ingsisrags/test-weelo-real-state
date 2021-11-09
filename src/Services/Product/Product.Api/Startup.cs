@@ -1,14 +1,19 @@
 using System;
 using System.Text.Json.Serialization;
 using AutoMapper;
+using Common.Utilities.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Product.Persistence.Database.Context;
+using Product.Service.Implementations;
+using Product.Service.Interfaces;
 
 namespace Product.Api
 {
@@ -33,25 +38,19 @@ namespace Product.Api
 
             string connectionString = Environment.GetEnvironmentVariable("SQL_SERVER_CONNECTION");
             //string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            var migrationsAssembly = "Farming.Persistense.Database";
+            var migrationsAssembly = "Product.Persistense.Database";
 
-           // services.AddDbContext<ApplicationDbContext>(options =>
-           //    options.UseSqlServer(connectionString,
-           //    sqlServerOptionsAction: sqlOptions =>
-           //    {
-           //        sqlOptions.MigrationsAssembly(migrationsAssembly);
-           //        sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
-           //    }),
-           //    ServiceLifetime.Scoped
-           //);
+            services.AddDbContext<ApplicationDbContext>(options =>
+               options.UseSqlServer(connectionString,
+               sqlServerOptionsAction: sqlOptions =>
+               {
+                   sqlOptions.MigrationsAssembly(migrationsAssembly);
+                   sqlOptions.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+               }),
+               ServiceLifetime.Scoped
+           );
 
-
-            services.AddAuthorization(options =>
-            {
-
-            });
-
-            var profiles = "Farming.Mappers"; //typeof("Company.Mappers").Assembly;
+            var profiles = "Product.Mappers";
 
             MapperConfiguration mappingConfig = new MapperConfiguration(config =>
             {
@@ -62,20 +61,17 @@ namespace Product.Api
             services.AddSingleton(mapper);
 
             //utilities
-            //services.AddScoped(typeof(IGrowUnitService), typeof(GrowUnitService));
-            //services.AddScoped(typeof(IGrowPlanService), typeof(GrowPlanService));
-            //services.AddScoped(typeof(IStrainService), typeof(StrainService));
-            //services.AddScoped(typeof(ICultivateService), typeof(CultivateService));
+            services.AddScoped(typeof(IProductService), typeof(ProductService));
 
             //AddSwagger
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Company service", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Product service", Version = "v1" });
                 options.DocInclusionPredicate((docName, description) => true);
             });
 
             //Add repository
-            //services.UseRepository(typeof(ApplicationDbContext));
+            services.UseRepository(typeof(ApplicationDbContext));
 
             //Add Cors
             var origins = Configuration.GetSection("origins").Get<string[]>();
@@ -96,7 +92,7 @@ namespace Product.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            var pathBase = Configuration["PATH_BASE"] + "/farming/api";
+            var pathBase = Configuration["PATH_BASE"] + "/product/api";
             if (!string.IsNullOrEmpty(pathBase))
             {
                 loggerFactory.CreateLogger<Startup>().LogDebug("Using PATH BASE '{pathBase}'", pathBase);
