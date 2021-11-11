@@ -10,5 +10,8 @@ namespace Product.DTOs.Realstate.Output
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public double Price { get; set; }
+
+        public List<PropertyViewOrderOutput> PropertyImage { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Product.Persistense.Database.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,7 +52,8 @@ namespace Product.Persistense.Database.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     File = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Enabled = table.Column<bool>(type: "bit", nullable: false),
-                    PropertyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    PropertyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Order = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

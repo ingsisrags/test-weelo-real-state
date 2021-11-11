@@ -50,18 +50,20 @@ namespace Product.Service.Implementations
             return output;
         }
 
-        public async Task<List<PropertyWithDetailOutput>> GetProperties(FilterPropertyInput input)
+        public async Task<List<PropertyOutput>> GetProperties(FilterPropertyInput input)
         {
-            var query = _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x => x.PropertyImage)
+            var query = _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x=>x.PropertyImage)
                 .WhereIf(input.MaximumPrice.HasValue, x => x.Price <= input.MaximumPrice.Value)
                 .WhereIf(input.MinimumPrice.HasValue, x => x.Price >= input.MinimumPrice.Value)
                 .WhereIf(input.ProductId.HasValue, x => x.Id == input.ProductId.Value)
                 .WhereIf(!string.IsNullOrEmpty(input.Keyword), x => x.Name.Contains(input.Keyword) || x.Owner.Name.Contains(input.Keyword) || x.PropertyTraces.Any(x => x.Name.Contains(input.Keyword)));
 
-            var properties = await query.Skip(input.PageNumber).Take(input.PageSize).ToListAsync();
+            var properties = await query.Skip(input.PageSize * (input.PageNumber - 1))
+                .Take(input.PageSize)
+                .ToListAsync(); 
 
 
-            return _mapper.Map<List<PropertyWithDetailOutput>>(properties);
+            return _mapper.Map<List<PropertyOutput>>(properties);
 
         }
     }

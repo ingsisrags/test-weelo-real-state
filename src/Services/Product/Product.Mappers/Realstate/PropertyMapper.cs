@@ -23,6 +23,7 @@ namespace Product.Mappers.Realstate
             CreateMap<PropertyImage, ImageOutput>();
             CreateMap<Property, PropertyImage>()
                   .ForMember(x => x.PropertyId, pro => pro.MapFrom(y => y.Id))
+                  .ForMember(x => x.Id, pro => pro.Ignore())
                 ;
             CreateMap<string, PropertyImage>()
                  .ForMember(x => x.File, pro => pro.MapFrom(y => y))
@@ -31,6 +32,8 @@ namespace Product.Mappers.Realstate
             CreateMap<Property, PropertyTrace>()
                 .ForMember(x => x.PropertyId, pro => pro.MapFrom(y => y.Id))
                 .ForMember(x => x.Name, pro => pro.Ignore());
+            CreateMap<PropertyImage, PropertyViewOrderOutput>().ForMember(x => x.ImageId, pro => pro.MapFrom(y => y.Id));
+            
         }
     }
 }

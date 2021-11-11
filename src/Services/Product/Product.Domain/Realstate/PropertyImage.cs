@@ -14,5 +14,6 @@ namespace Product.Domain.Realstate
 
         public Guid PropertyId { get; set; }
         public Property Property { get; set; }
+        public int Order { get; set; }
     }
 }

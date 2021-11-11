@@ -26,7 +26,8 @@ namespace Product.Service.Implementations
         }
         public async Task<PropertyOutput> ChangePrice(UpdatePriceInput input)
         {
-            var property = await _propertyRepository.GetAll().FirstOrDefaultAsync(x => x.Id == input.PropertyId);
+            var property = await _propertyRepository.GetAll().Include(x=>x.PropertyImage)
+                .Include(x=>x.PropertyTraces).FirstOrDefaultAsync(x => x.Id == input.PropertyId);
             if (property is null)
             {
                 throw new NotFoundException("Product don't find");

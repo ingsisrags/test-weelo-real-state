@@ -8,6 +8,6 @@ namespace Product.Service.Interfaces
     public interface IProductService
     {
         Task<PropertyOutput> CreatePropertyBuilding(CreatePropertyInput input);
-        Task<List<PropertyWithDetailOutput>> GetProperties(FilterPropertyInput input);
+        Task<List<PropertyOutput>> GetProperties(FilterPropertyInput input);
     }
 }

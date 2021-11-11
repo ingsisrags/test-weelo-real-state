@@ -11,5 +11,6 @@ namespace Product.Service.Interfaces
     public interface IImageService
     {
         Task<ImageOutput> CreateImages(CreateImagePropertyInput input);
+        Task<PropertyOutput> UpdateView(List<UpdateViewsOrder> input, Guid PropertyId);
     }
 }

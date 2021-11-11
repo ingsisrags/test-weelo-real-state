@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Product.DTOs.Realstate.Input;
@@ -27,7 +28,7 @@ namespace Product.Api.Controllers
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost("v1/get-properties")]
-        public async Task<List<PropertyWithDetailOutput>> GetProperties([FromQuery] FilterPropertyInput input)
+        public async Task<List<PropertyOutput>> GetProperties([FromQuery] FilterPropertyInput input)
         {
             return await _productService.GetProperties(input);
         }
@@ -64,6 +65,18 @@ namespace Product.Api.Controllers
         public async Task<PropertyOutput> ChangePrice([FromForm] UpdatePriceInput input)
         {
             return await _priceService.ChangePrice(input);
+        }
+        /// <summary>
+        /// Method for update image order view
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="PropertyId"></param>
+        /// <returns></returns>
+
+        [HttpPut("v1/update-view-property")]
+        public async Task<PropertyOutput> UpdateView([FromBody]  List<UpdateViewsOrder> input, [FromQuery] Guid PropertyId)
+        {
+            return await _imageService.UpdateView(input, PropertyId);
         }
 
     }

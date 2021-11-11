@@ -10,8 +10,8 @@ using Product.Persistence.Database.Context;
 namespace Product.Persistense.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211109000950_Initial")]
-    partial class Initial
+    [Migration("20211111133730_Initital")]
+    partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -88,6 +88,9 @@ namespace Product.Persistense.Database.Migrations
                     b.Property<string>("File")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("PropertyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -140,7 +143,7 @@ namespace Product.Persistense.Database.Migrations
             modelBuilder.Entity("Product.Domain.Realstate.PropertyImage", b =>
                 {
                     b.HasOne("Product.Domain.Realstate.Property", "Property")
-                        .WithMany()
+                        .WithMany("PropertyImage")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -151,12 +154,19 @@ namespace Product.Persistense.Database.Migrations
             modelBuilder.Entity("Product.Domain.Realstate.PropertyTrace", b =>
                 {
                     b.HasOne("Product.Domain.Realstate.Property", "Property")
-                        .WithMany()
+                        .WithMany("PropertyTraces")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Property");
+                });
+
+            modelBuilder.Entity("Product.Domain.Realstate.Property", b =>
+                {
+                    b.Navigation("PropertyImage");
+
+                    b.Navigation("PropertyTraces");
                 });
 #pragma warning restore 612, 618
         }

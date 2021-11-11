@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using Common.Utilities.Database;
@@ -72,7 +74,6 @@ namespace Product.Api
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo() { Title = "Product service", Version = "v1" });
-                options.DocInclusionPredicate((docName, description) => true);
             });
 
             //Add repository

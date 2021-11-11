@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Product.Api</name>
+    </assembly>
+    <members>
+        <member name="M:Product.Api.Controllers.ProductController.GetProperties(Product.DTOs.Realstate.Input.FilterPropertyInput)">
+            <summary>
+            Get Product by Filters
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Product.Api.Controllers.ProductController.CreateBuilding(Product.DTOs.Realstate.Input.CreatePropertyInput)">
+            <summary>
+            Post method for create building, return object with Id and name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Product.Api.Controllers.ProductController.CreateImages(Product.DTOs.Realstate.Input.CreateImagePropertyInput)">
+            <summary>
+            Method for create image of property
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Product.Api.Controllers.ProductController.ChangePrice(Product.DTOs.Realstate.Input.UpdatePriceInput)">
+            <summary>
+            Method for change price to property
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Product.Api.Controllers.ProductController.UpdateView(System.Collections.Generic.List{Product.DTOs.Realstate.Input.UpdateViewsOrder},System.Guid)">
+            <summary>
+            Method for update image order view
+            </summary>
+            <param name="input"></param>
+            <param name="PropertyId"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

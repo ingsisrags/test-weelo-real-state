@@ -25,13 +25,15 @@ namespace Product.Service.Implementations
         private readonly IRepositoryAsync<Property> _propertyRepository;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ImageService(IRepositoryAsync<PropertyImage> propertyImageRepository, IRepositoryAsync<Property> propertyRepository, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        public ImageService(IRepositoryAsync<PropertyImage> propertyImageRepository, IRepositoryAsync<Property> propertyRepository, IMapper mapper, IWebHostEnvironment hostEnvironment, IUnitOfWork unitOfWork)
         {
             _propertyRepository = propertyRepository;
             _propertyImageRepository = propertyImageRepository;
             _mapper = mapper;
             _hostEnvironment = hostEnvironment;
+            _unitOfWork = unitOfWork;
 
         }
         public async Task<ImageOutput> CreateImages(CreateImagePropertyInput input)
@@ -47,6 +49,30 @@ namespace Product.Service.Implementations
             await _propertyImageRepository.Commit();
             return _mapper.Map<ImageOutput>(propertyImage);
 
+        }
+
+        public async Task<PropertyOutput> UpdateView(List<UpdateViewsOrder> input, Guid PropertyId)
+        {
+            var property = await _propertyRepository.GetAll().AnyAsync(x => x.Id == PropertyId);
+            if (!property)
+            {
+                throw new NotFoundException("Product don't find");
+            }
+
+            foreach (var i in input)
+            {
+                var image = await _propertyImageRepository.GetAll().FirstOrDefaultAsync(x => x.Id == i.ImageId && x.PropertyId==PropertyId); 
+                if (image != null)
+                {
+                    image.Order = i.Order;
+                    _propertyImageRepository.Update(image);
+                }
+            }
+
+            _unitOfWork.SaveChanges();
+
+            var propertyReturn = await _propertyRepository.GetAll().Include(x=>x.PropertyImage).FirstOrDefaultAsync(x => x.Id == PropertyId);
+            return _mapper.Map<PropertyOutput>(propertyReturn);
         }
 
         private async Task<string> UploadedFile(IFormFile image)
