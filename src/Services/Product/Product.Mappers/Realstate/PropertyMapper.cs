@@ -19,6 +19,18 @@ namespace Product.Mappers.Realstate
             CreateMap<CreateOwnerInput, Owner>();
             CreateMap<CreatePropertyTrace, PropertyTrace>();
             CreateMap<Property, PropertyOutput>();
+            CreateMap<UpdatePriceInput, Property>();
+            CreateMap<PropertyImage, ImageOutput>();
+            CreateMap<Property, PropertyImage>()
+                  .ForMember(x => x.PropertyId, pro => pro.MapFrom(y => y.Id))
+                ;
+            CreateMap<string, PropertyImage>()
+                 .ForMember(x => x.File, pro => pro.MapFrom(y => y))
+                 .ForMember(x => x.Enabled, pro => pro.MapFrom(y => true));
+            ;
+            CreateMap<Property, PropertyTrace>()
+                .ForMember(x => x.PropertyId, pro => pro.MapFrom(y => y.Id))
+                .ForMember(x => x.Name, pro => pro.Ignore());
         }
     }
 }

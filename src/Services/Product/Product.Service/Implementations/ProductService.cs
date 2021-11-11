@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Utilities.Extension;
 using Common.Utilities.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 using Product.Domain.Realstate;
@@ -7,6 +8,7 @@ using Product.DTOs.Realstate.Output;
 using Product.Service.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,13 +39,30 @@ namespace Product.Service.Implementations
         public async Task<PropertyOutput> CreatePropertyBuilding(CreatePropertyInput input)
         {
             var property = _mapper.Map<Property>(input);
-            var propertyTrace = _mapper.Map<PropertyTrace>(input.PropertyTrace);
+
             await _ownerRepository.InsertAsync(property.Owner);
             property = await _propertyRepository.InsertAsync(property);
+            var propertyTrace = _mapper.Map<PropertyTrace>(input.PropertyTrace);
+            propertyTrace = _mapper.Map(property, propertyTrace);
             await _propertyTrace.InsertAsync(propertyTrace);
             _unitOfWork.SaveChanges();
             var output = _mapper.Map<PropertyOutput>(property);
             return output;
+        }
+
+        public async Task<List<PropertyWithDetailOutput>> GetProperties(FilterPropertyInput input)
+        {
+            var query = _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x => x.PropertyImage)
+                .WhereIf(input.MaximumPrice.HasValue, x => x.Price <= input.MaximumPrice.Value)
+                .WhereIf(input.MinimumPrice.HasValue, x => x.Price >= input.MinimumPrice.Value)
+                .WhereIf(input.ProductId.HasValue, x => x.Id == input.ProductId.Value)
+                .WhereIf(!string.IsNullOrEmpty(input.Keyword), x => x.Name.Contains(input.Keyword) || x.Owner.Name.Contains(input.Keyword) || x.PropertyTraces.Any(x => x.Name.Contains(input.Keyword)));
+
+            var properties = await query.Skip(input.PageNumber).Take(input.PageSize).ToListAsync();
+
+
+            return _mapper.Map<List<PropertyWithDetailOutput>>(properties);
+
         }
     }
 

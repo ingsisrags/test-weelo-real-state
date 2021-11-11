@@ -2,6 +2,8 @@ using System;
 using System.Text.Json.Serialization;
 using AutoMapper;
 using Common.Utilities.Database;
+using Common.Utilities.Implements.Repository;
+using Common.Utilities.Interfaces.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -62,6 +64,9 @@ namespace Product.Api
 
             //utilities
             services.AddScoped(typeof(IProductService), typeof(ProductService));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IImageService), typeof(ImageService));
+            services.AddScoped(typeof(IPriceService), typeof(PriceService));
 
             //AddSwagger
             services.AddSwaggerGen(options =>

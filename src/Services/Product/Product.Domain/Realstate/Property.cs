@@ -20,5 +20,6 @@ namespace Product.Domain.Realstate
         public Guid OwnerId { get; set; }
         public Owner Owner { get; set; }
         public List<PropertyTrace> PropertyTraces {get;set;}
+        public PropertyImage PropertyImage {get;set;}
 }
 }
