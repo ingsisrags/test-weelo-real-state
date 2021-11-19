@@ -11,5 +11,6 @@ namespace Product.Service.Interfaces
     public interface IPriceService
     {
         Task<PropertyOutput> ChangePrice(UpdatePriceInput input);
+        Task<RangePriceOutput> GetPriceRange();
     }
 }

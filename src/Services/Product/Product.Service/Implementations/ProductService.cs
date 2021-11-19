@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Utilities.Exceptions;
 using Common.Utilities.Extension;
 using Common.Utilities.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -42,9 +43,14 @@ namespace Product.Service.Implementations
 
             await _ownerRepository.InsertAsync(property.Owner);
             property = await _propertyRepository.InsertAsync(property);
-            var propertyTrace = _mapper.Map<PropertyTrace>(input.PropertyTrace);
-            propertyTrace = _mapper.Map(property, propertyTrace);
-            await _propertyTrace.InsertAsync(propertyTrace);
+            foreach (var propertytrace in input.PropertyTrace)
+            {
+                var propertyTrace = _mapper.Map<PropertyTrace>(propertytrace);
+                propertyTrace.Property = property;
+                property.CodeInternal = Guid.NewGuid().ToString().Substring(1,10);
+                await _propertyTrace.InsertAsync(propertyTrace);
+            }
+
             _unitOfWork.SaveChanges();
             var output = _mapper.Map<PropertyOutput>(property);
             return output;
@@ -52,7 +58,7 @@ namespace Product.Service.Implementations
 
         public async Task<List<PropertyOutput>> GetProperties(FilterPropertyInput input)
         {
-            var query = _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x=>x.PropertyImage)
+            var query = _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x => x.PropertyImage)
                 .WhereIf(input.MaximumPrice.HasValue, x => x.Price <= input.MaximumPrice.Value)
                 .WhereIf(input.MinimumPrice.HasValue, x => x.Price >= input.MinimumPrice.Value)
                 .WhereIf(input.ProductId.HasValue, x => x.Id == input.ProductId.Value)
@@ -60,10 +66,21 @@ namespace Product.Service.Implementations
 
             var properties = await query.Skip(input.PageSize * (input.PageNumber - 1))
                 .Take(input.PageSize)
-                .ToListAsync(); 
+                .ToListAsync();
 
 
             return _mapper.Map<List<PropertyOutput>>(properties);
+
+        }
+
+        public async Task<PropertyOutput> GetPropertiesById(Guid Id)
+        {
+            var product = await _propertyRepository.GetAll().Include(y => y.Owner).Include(x => x.PropertyTraces).Include(x => x.PropertyImage)
+                .Include(x => x.PropertyImage).FirstOrDefaultAsync(x => x.Id == Id);
+
+            if (product == null) throw new NotFoundException("Product not find");
+
+            return _mapper.Map<PropertyOutput>(product);
 
         }
     }

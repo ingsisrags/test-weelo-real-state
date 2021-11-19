@@ -10,12 +10,12 @@ namespace Product.Api.Controllers
 {
     [Route("property")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class PropertyController : ControllerBase
     {
         private readonly IProductService _productService;
         private readonly IImageService _imageService;
         private readonly IPriceService _priceService;
-        public ProductController(IProductService productService, IImageService imageService, IPriceService priceService)
+        public PropertyController(IProductService productService, IImageService imageService, IPriceService priceService)
         {
             _productService = productService;
             _imageService = imageService;
@@ -27,10 +27,22 @@ namespace Product.Api.Controllers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [HttpPost("v1/get-properties")]
+        [HttpGet("v1/get-properties")]
         public async Task<List<PropertyOutput>> GetProperties([FromQuery] FilterPropertyInput input)
         {
             return await _productService.GetProperties(input);
+        }
+
+        /// <summary>
+        /// Method find product by Id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+
+        [HttpGet("v1/get-property-by-id/{Id}")]
+        public async Task<PropertyOutput> GetPropertiesById([FromRoute] Guid Id)
+        {
+            return await _productService.GetPropertiesById(Id);
         }
 
         /// <summary>
@@ -55,17 +67,7 @@ namespace Product.Api.Controllers
         {
             return await _imageService.CreateImages(input);
         }
-        /// <summary>
-        /// Method for change price to property
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-
-        [HttpPut("v1/change-price-property")]
-        public async Task<PropertyOutput> ChangePrice([FromForm] UpdatePriceInput input)
-        {
-            return await _priceService.ChangePrice(input);
-        }
+     
         /// <summary>
         /// Method for update image order view
         /// </summary>

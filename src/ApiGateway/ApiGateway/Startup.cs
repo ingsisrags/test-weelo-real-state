@@ -43,18 +43,6 @@ namespace ApiGateway
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-            var identityUrl = Configuration.GetValue<string>("urls:identity");
-            var validIssuers = Configuration.GetSection("ValidIssuers").Get<string[]>();
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-            .AddIdentityServerAuthentication("IdentityApiKey", options =>
-            {
-                options.Authority = identityUrl;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters.RequireAudience = false;
-                options.TokenValidationParameters.ValidateAudience = false;
-                options.TokenValidationParameters.ValidIssuers = validIssuers;
-            }, null);
-
             IdentityModelEventSource.ShowPII = true;
 
             var origins = Configuration.GetSection("origins").Get<string[]>();

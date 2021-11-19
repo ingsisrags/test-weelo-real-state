@@ -1,5 +1,6 @@
 ﻿using Product.DTOs.Realstate.Input;
 using Product.DTOs.Realstate.Output;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,5 +10,6 @@ namespace Product.Service.Interfaces
     {
         Task<PropertyOutput> CreatePropertyBuilding(CreatePropertyInput input);
         Task<List<PropertyOutput>> GetProperties(FilterPropertyInput input);
+        Task<PropertyOutput> GetPropertiesById(Guid Id);
     }
 }

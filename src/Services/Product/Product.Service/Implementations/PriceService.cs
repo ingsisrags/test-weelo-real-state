@@ -42,5 +42,13 @@ namespace Product.Service.Implementations
             return _mapper.Map<PropertyOutput>(property);
 
         }
+
+        public async Task<RangePriceOutput> GetPriceRange()
+        {
+            var minPrice = Math.Round(_propertyRepository.GetAll().Min(x => x.Price)/1000000);
+            var maxPrice =Math.Round( _propertyRepository.GetAll().Max(x => x.Price)/1000000);
+
+            return new RangePriceOutput() { MaxPrice = maxPrice, MinPrice = minPrice };
+        }
     }
 }

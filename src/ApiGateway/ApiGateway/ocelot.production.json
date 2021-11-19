@@ -1,58 +1,16 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/security/api/connect/{everything}",
+      "DownstreamPathTemplate": "/product/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "identity-service",
+          "Host": "product-service",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/security/api/connect/{everything}",
+      "UpstreamPathTemplate": "/product/api/{everything}",
       "UpstreamHttpMethod": [],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 1500
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/company/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "company-service",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/company/api/{everything}",
-      "UpstreamHttpMethod": [],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 1500
-      }
-    },
-    {
-      "DownstreamPathTemplate": "/security/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "identity-service",
-          "Port": 80
-        }
-      ],
-      "UpstreamPathTemplate": "/security/api/{everything}",
-      "UpstreamHttpMethod": [],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "IdentityApiKey",
-        "AllowedScopes": []
-      },
       "RateLimitOptions": {
         "ClientWhitelist": [],
         "EnableRateLimiting": true,

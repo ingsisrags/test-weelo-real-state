@@ -16,15 +16,13 @@ namespace Product.DTOs.Realstate.Input
         public string Address { get; set; }
         [Required]
         public double Price { get; set; }
-        [StringLength(10)]
-        [Required]
-        public string CodeInternal { get; set; }
+       
         [Required]
         public int Year { get; set; }
         [Required]
         public CreateOwnerInput Owner { get; set; }
         [Required]
-        public CreatePropertyTrace PropertyTrace { get; set; }
+        public List<CreatePropertyTrace> PropertyTrace { get; set; }
 
     }
 }

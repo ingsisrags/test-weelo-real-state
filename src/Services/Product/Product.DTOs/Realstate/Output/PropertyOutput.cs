@@ -12,6 +12,12 @@ namespace Product.DTOs.Realstate.Output
         public string Name { get; set; }
         public double Price { get; set; }
 
-        public List<PropertyViewOrderOutput> PropertyImage { get; set; }
+        public string Address { get; set; }
+        public string CodeInternal { get; set; }
+        public int Year { get; set; }
+        public OwnerOutput Owner { get; set; }
+
+        public List<ImageOutput> PropertyImage { get; set; }
+        public List<PropertyTraceOutput> PropertyTraces { get; set; }
     }
 }
